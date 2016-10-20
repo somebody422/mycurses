@@ -8,17 +8,17 @@ FLAGS=-Wall -std=c++11
 all: $(TARGET)
 
 run: all
-	./$(TARGET).exe
+	./$(TARGET)
 
 $(TARGET): $(OBJECTS)
 	$(CC) -o $@ $(OBJECTS) $(FLAGS) -lncurses
 
-$(OBJECTS): obj/%.o: src/%.cpp mycurses.hpp
+$(OBJECTS): obj/%.o: src/%.cpp src/mycurses.hpp
 	$(CC) -c -o $@ $< -I . $(FLAGS)
 
 test: test.cpp
 	$(CC) -o test test.cpp $(filter-out obj/main.o,$(OBJECTS)) $(FLAGS) -lncurses
-	./$@.exe
+	./test
 
 clean:
 	rm obj/*.o; \
