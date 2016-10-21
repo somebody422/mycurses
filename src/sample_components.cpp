@@ -250,7 +250,7 @@ std::string ListSelectComponent::getSelectedOption(){
 //ScrollableListComponent
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ScrollableListComponent::ScrollableListComponent(std::vector<std::string> options_i)
-  : Component(), options(options_i)
+  : Component(), options(options_i), options_offset(0)
 {
   
 }
@@ -259,24 +259,39 @@ void ScrollableListComponent::drawComponent(){
   win.clear();
   //scroll_lines is 0 if there is enough room to draw all of the
   // options. otherwise it is 1
-  int scroll_lines = (options.size() > win.getHeight()-2) ? 1 : 0;
+  //int scroll_lines = (options.size() > win.getHeight()-2) ? 1 : 0;
 
-  int num_options_displayed = win.getHeight() - 2 - 2*scroll_lines;
+  int num_options_displayed = win.getHeight() - 2;
+  if(num_options_displayed >= options.size()){
+    options_offset = 0;
+    can_scroll_up = false;
+    can_scroll_down = false;
+  }
+  else{
+    can_scroll_up = (options_offset == 0) ? false : true;
+    can_scroll_down =
+      (options.size() - options_offset >= num_options_displayed) ? true : false;
+  }
+  
+  if(can_scroll_up || can_scroll_down) num_options_displayed -= 2;
 
   //if the selected option is too far down, move offset so it is at the
   // bottom of the displayed list
-  if(selected_option_index > options_offset + num_options_displayed)
-    options_offset = selected_option_index - num_options_displayed;
+  //if(selected_option_index > options_offset + num_options_displayed)
+  //  options_offset = selected_option_index - num_options_displayed;
   
-  if(scroll_lines){
+  if(can_scroll_up || can_scroll_down){
     for(unsigned int x = 0; x < win.getWidth()-2; x++){
-      win.print('^', x, 0);
-      win.print('v', x, win.getHeight()-3);
+      if(can_scroll_up) win.print('^', x, 0);
+      else win.print('-', x, 0);
+      if(can_scroll_down) win.print('v', x, win.getHeight()-3);
+      else win.print('-', x, win.getHeight()-3);
     }
   }
 
-  for(int y = scroll_lines; y < num_options_displayed; y++){
-    win.print(options[y - scroll_lines], 0, y);
+  for(int y = 0; y < num_options_displayed; y++){
+    if(y + options_offset >= options.size()) break;
+    win.print(options[y + options_offset], 0, y + ((can_scroll_up || can_scroll_down)?1:0) );
   }
   
 
@@ -284,6 +299,23 @@ void ScrollableListComponent::drawComponent(){
 }
 
 bool ScrollableListComponent::respondToKeyPress(int ch){
+  switch(ch){
+    case Terminal::UP_ARROW_KEY:
+      if(can_scroll_up){
+	options_offset -= 1;
+	drawComponent();
+	return true;
+      }
+      return false;
+    case Terminal::DOWN_ARROW_KEY:
+      if(can_scroll_down){
+	options_offset += 1;
+	drawComponent();
+	return true;
+      }
+      return false;
+  }
+
   return false;
 }
 

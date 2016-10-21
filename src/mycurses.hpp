@@ -480,8 +480,10 @@ public:
 class ScrollableListComponent : public Component{
   std::vector<std::string> options;
   int options_offset;
-  int selected_option_index;
-  std::string selected_option;
+  bool can_scroll_up = false;
+  bool can_scroll_down = false;
+  //int selected_option_index;
+  //std::string selected_option;
 public:
   ScrollableListComponent(std::vector<std::string>);
   void drawComponent();

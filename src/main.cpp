@@ -101,6 +101,8 @@ int main(){
   strings.push_back("two");
   strings.push_back("three");
   strings.push_back("four");
+  strings.push_back("five");
+  strings.push_back("six");
   ScrollableListComponent* scrollable_1 = new ScrollableListComponent(strings);
   
   MessageComponent* l2_1 = new MessageComponent("first l2 component");
