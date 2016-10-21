@@ -243,3 +243,50 @@ bool ListSelectComponent::respondToKeyPress(int ch){
 std::string ListSelectComponent::getSelectedOption(){
   return options[selected_option];
 }
+
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//ScrollableListComponent
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ScrollableListComponent::ScrollableListComponent(std::vector<std::string> options_i)
+  : Component(), options(options_i)
+{
+  
+}
+
+void ScrollableListComponent::drawComponent(){
+  win.clear();
+  //scroll_lines is 0 if there is enough room to draw all of the
+  // options. otherwise it is 1
+  int scroll_lines = (options.size() > win.getHeight()-2) ? 1 : 0;
+
+  int num_options_displayed = win.getHeight() - 2 - 2*scroll_lines;
+
+  //if the selected option is too far down, move offset so it is at the
+  // bottom of the displayed list
+  if(selected_option_index > options_offset + num_options_displayed)
+    options_offset = selected_option_index - num_options_displayed;
+  
+  if(scroll_lines){
+    for(unsigned int x = 0; x < win.getWidth()-2; x++){
+      win.print('^', x, 0);
+      win.print('v', x, win.getHeight()-3);
+    }
+  }
+
+  for(int y = scroll_lines; y < num_options_displayed; y++){
+    win.print(options[y - scroll_lines], 0, y);
+  }
+  
+
+  win.refresh();
+}
+
+bool ScrollableListComponent::respondToKeyPress(int ch){
+  return false;
+}
+
+std::string ScrollableListComponent::getSelectedOption(){
+  return "test";
+}

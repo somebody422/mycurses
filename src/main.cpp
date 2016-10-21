@@ -95,6 +95,13 @@ int main(){
   dynamic_1->addMessage("third message in");
   dynamic_2->addMessage("this is the second dynamic component");
   dynamic_2->addMessage("yay!");
+
+  std::vector<std::string> strings;
+  strings.push_back("one");
+  strings.push_back("two");
+  strings.push_back("three");
+  strings.push_back("four");
+  ScrollableListComponent* scrollable_1 = new ScrollableListComponent(strings);
   
   MessageComponent* l2_1 = new MessageComponent("first l2 component");
   MessageComponent* l2_2 = new MessageComponent("second l2 component");
@@ -115,7 +122,8 @@ int main(){
   l1.addComponent(my_input_1, 0, 0);
   l1.addComponent(dynamic_1, 0, .5, l1.C_DYNAMIC_HEIGHT);
   l1.addComponent(select_1, 1, 0);
-  l1.addComponent((Component*)l2, 1, l1.C_DYNAMIC_HEIGHT);
+  //l1.addComponent((Component*)l2, 1, l1.C_DYNAMIC_HEIGHT);
+  l1.addComponent(scrollable_1, 1, l1.C_DYNAMIC_HEIGHT);
   l1.setColumnWeight(0, .5);
   
   

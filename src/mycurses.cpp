@@ -290,7 +290,7 @@ void Window::colorOff(int fg, int bg){
 
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//component
+//Component
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Component::Component() : win(Border::DEFAULT) {}
 void Component::draw(){
@@ -319,7 +319,7 @@ int Component::getChar(){
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Dialog::Dialog()
-  : win(Border::DIALOG_DEFAULT) {}
+  : win(Border::DIALOG_DEFAULT){}
 
 /*Dialog::Dialog()
   : t(Terminal::instance()), win(3, 3, t->width() - 6, t->height() - 6)

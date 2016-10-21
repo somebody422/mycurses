@@ -474,4 +474,19 @@ public:
 };
 
 
+/*
+ *
+ */
+class ScrollableListComponent : public Component{
+  std::vector<std::string> options;
+  int options_offset;
+  int selected_option_index;
+  std::string selected_option;
+public:
+  ScrollableListComponent(std::vector<std::string>);
+  void drawComponent();
+  bool respondToKeyPress(int ch);
+  std::string getSelectedOption();
+};
+
 #endif
