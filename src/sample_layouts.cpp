@@ -151,8 +151,9 @@ void ColumnLayout::setDialog(Dialog* d){
  *
  */
 ColumnLayout::ColumnLayout(int num_cols_i)
-  : num_cols(num_cols_i), components(num_cols_i)
+  : Layout(), num_cols(num_cols_i), components(num_cols_i)
 {
+  min_height = 0;
   //total_horizontal_weight = num_cols;
   for(int i = 0; i < num_cols; i++) total_horizontal_weight += 1.0;
 }
@@ -287,7 +288,11 @@ void ColumnLayout::addComponent(Component* c, int col, double weight, unsigned c
   if(dynamic_height){
     column.total_vertical_weight += weight;
   }
-  else column.total_static_height += c->getMinHeight();
+  else{
+    column.total_static_height += c->getMinHeight();
+    min_height = (min_height > column.total_static_height)
+      ? min_height : column.total_static_height;
+  }
   column.push_back(c);
   if(empty && !unfocusable){
     selected_col = col;

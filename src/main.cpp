@@ -23,14 +23,10 @@ MyDialog::MyDialog(std::string str, DynamicMessageComponent* c_i) : SimpleDialog
   button_layout = new ColumnLayout(2);
   button_layout->addComponent(continue_button, 0, 0);
   button_layout->addComponent(cancel_button, 1, 0);
-  addComponent(input1, 0);
+  addComponent(input1);
   addComponent(fill1, C_DYNAMIC_HEIGHT | C_UNFOCUSABLE);
-  addComponent(input2, 0);
-  //addComponent(new DialogContinueButton(), 0);
-  //addComponent(fill1, C_DYNAMIC_HEIGHT | C_UNFOCUSABLE);
-  //addComponent(new DialogContinueButton(this), 0);
-  //addComponent(new DialogContinueButton(this), 0);
-  addComponent(button_layout);
+  addComponent(input2);
+  //addComponent(button_layout);
 }
 MyDialog::~MyDialog(){
   delete input1;
@@ -76,6 +72,7 @@ int main(){
   ColumnLayout l1(2);
   ColumnLayout* l2 = new ColumnLayout(3);
   ColumnLayout* l3 = new ColumnLayout(2);
+  ColumnLayout* inputs = new ColumnLayout(2);
   MessageComponent* c1 = new MessageComponent("one");
   MessageComponent* c2 = new MessageComponent("two");
   MessageComponent* c3 = new MessageComponent("three");
@@ -119,12 +116,21 @@ int main(){
   l2->addComponent(l2_2, 1, l2->C_UNFOCUSABLE);
   l2->addComponent(l2_dynamic_2, 1, l2->C_DYNAMIC_HEIGHT | l2->C_UNFOCUSABLE);
   l2->addComponent(l2_dynamic_3, 2, l2->C_DYNAMIC_HEIGHT);
+
+  MyInputComponent* input_one = new MyInputComponent(dynamic_1);
+  MyInputComponent* input_two = new MyInputComponent(dynamic_1);
+  inputs->addComponent(input_one, 0, 0);
+  inputs->addComponent(input_two, 1, 0);
+
+  //l2->addComponent(inputs, 1, 0);
   
   l1.addComponent(dynamic_2, 0, l1.C_DYNAMIC_HEIGHT);
   l1.addComponent(my_input_1, 0, 0);
   l1.addComponent(dynamic_1, 0, .5, l1.C_DYNAMIC_HEIGHT);
   l1.addComponent(select_1, 1, 0);
   //l1.addComponent((Component*)l2, 1, l1.C_DYNAMIC_HEIGHT);
+  l1.addComponent((Component*)inputs, 1, 0);
+  l1.addComponent(new SimpleInputComponent(), 1, 0);
   l1.addComponent(scrollable_1, 1, l1.C_DYNAMIC_HEIGHT);
   l1.setColumnWeight(0, .5);
   
